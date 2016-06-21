@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block style_block %}
+    <style type="text/css">
+        table.table { width: 60%; }
+    </style>
+{% endblock %}
+
+{% block content %}
+
+    <h1 id="">All documents:</h1>
+    <p>Click an image to set a new profile picture.</p>
+    <div>&nbsp;</div>
+    <style>
+
+        .img-div {
+              padding: 0;
+              margin: 0;
+              list-style: none;
+              
+              display: -webkit-box;
+              display: -moz-box;
+              display: -ms-flexbox;
+              display: -webkit-flex;
+              display: flex;
+              
+              -webkit-flex-flow: row wrap;
+              justify-content: space-around;
+        }
+        .img {
+              padding-bottom: 5px;
+              padding-top: 5px;
+              width: 255px;
+              height: 150px;
+              margin-top: 10px;
+              
+              line-height: 150px;
+              color: white;
+              font-weight: bold;
+              font-size: 3em;
+              text-align: center;
+        }
+
+    </style>
+    {% for doc in docs %}
+      <table>
+        <tr>
+          <td>
+            <a href="{{ url_for('view_doc', bkey=doc.blob_key, filename=doc.filename)}}" download>{{doc.filename}}</a>
+          </td>
+          <td>{{doc.caption}}</td>
+          <td>{{doc.timestamp.strftime('%b %d, %Y %I:%M %p')}}</td>
+          <td><a href="{{url_for('delete_doc', document_id=doc.key.id())}}">delete</a></td>
+        </tr>
+      </table>
+    {% else %}
+        <tr><td colspan="7">No Docs yet</td></tr>
+    {% endfor %}
+    <br/>
+
+    <p>
+        <a class="btn btn-primary" data-toggle="modal" data-target="#new-doc-modal">
+            <i class="icon-plus-sign icon-white"></i>
+            New Doc
+        </a>
+    </p>
+
+{% endblock content %}
+
+{% block footer %}
+    <div class="modal fade" id="new-doc-modal">
+    <div class="modal-dialog">
+    <div class="modal-content">
+    <div class="modal-header">
+        <button class="close" data-dismiss="modal">&times;</button>
+        <h3>Add a New Doc</h3>
+    </div>
+    <div class="modal-body">
+      <form id="new-doc-form" action="{{upload_uri}}" method="POST" enctype="multipart/form-data">
+          <label for="file">Upload File: 
+            <input type="file" name="file">
+          </label>    
+          <br/>
+          <label for='passkey'>Passkey
+            <input type='password' name='passkey'>
+          </label>
+          <label for="caption">Description:
+            <textarea name="caption" form="new-doc-form"></textarea>
+          </label>
+          <br />
+          <input type="submit" name="submit" value="Submit">
+      </form>
+    </div>
+    </div>
+    </div>
+    </div>
+
+{% endblock footer %}
+
+{% block tail_script %}
+
+{% endblock tail_script %}

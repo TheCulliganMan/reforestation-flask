@@ -1,0 +1,39 @@
+<div class="modal fade" id="new-passkey-modal">
+    <div class="modal-dialog">
+    <div class="modal-content">
+    <div class="modal-header">
+        <button class="close" data-dismiss="modal">&times;</button>
+        <h3>Add a New Passkey</h3>
+    </div>
+    <div class="modal-body">
+        <form id="new-passkey-form" class="well"
+            action="{{ url_for('list_passkeys') }}" method="post" accept-charset="utf-8">
+            <fieldset>
+                {{ form.hidden_tag() }}
+                <div class="control-group">
+                    <div class="control-label">{{ form.passkey.label }}</div>
+                    <div class="controls">
+                        {{ form.passkey|safe }}
+                        {% if form.passkey.errors %}
+                        <ul class="errors">
+                            {% for error in form.passkey.errors %}
+                            <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </div>
+                </div>
+                <div>&nbsp;</div>
+                <div class="control-group">
+                    <div class="controls">
+                        <input class="btn btn-primary" type="submit" value="Add Passkey"/>
+                        <button class="btn" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+    </div>
+    </div>
+</div>
+
